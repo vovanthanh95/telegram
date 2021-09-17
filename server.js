@@ -18,10 +18,7 @@ const binance = new Binance().options({
   APISECRET: 'zTm2jMhG7GaS3FYJudOB7ppyEb7PZLISb1WEZPe3EwrDeF47zAuGQPXhzfYtGlbi'
 });
 var a ="";
-binance.prices('BNBBTC', (error, ticker) => {
-  a = ticker.BNBBTC;
-  console.info("Price of BNB: ", ticker.BNBBTC);
-});
+
 
 //telegram--------------------------------------
 
@@ -50,6 +47,10 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 // messages.
 bot.on('message', (msg) => {
   chatId = msg.chat.id;
+  binance.prices('BNBBTC', (error, ticker) => {
+    a = ticker.BNBBTC;
+    console.info("Price of BNB: ", ticker.BNBBTC);
+  });
 
   // send a message to the chat acknowledging receipt of their message
   bot.sendMessage(chatId, "$ BNB= " + a);
