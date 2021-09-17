@@ -31,30 +31,20 @@ const token = '1981812453:AAGjYCAgJ0AM85UHp2XLRlyFgbHSLeRFVaI';
 const bot = new TelegramBot(token, {polling: true});
 
 // Matches "/echo [whatever]"
-bot.onText(/\/echo (.+)/, (msg, match) => {
-  // 'msg' is the received Message from Telegram
-  // 'match' is the result of executing the regexp above on the text content
-  // of the message
-
+bot.onText(/\/start/, (msg, match) => {
   const chatId = msg.chat.id;
-  const resp = match[1]; // the captured "whatever"
-
-  // send back the matched "whatever" to the chat
-  bot.sendMessage(chatId, resp);
+  bot.sendMessage(chatId, "Xin chào: " + msg.from.first_name + " " + msg.from.last_name);
 });
 
-// Listen for any kind of message. There are different kinds of
-// messages.
-bot.on('message', (msg) => {
-  chatId = msg.chat.id;
+bot.onText(/\/price/, (msg, match) => {
+  const chatId = msg.chat.id;
+  bot.sendMessage(chatId, "Xin chào: " + msg.from.first_name + " " + msg.from.last_name);
   binance.prices('BNBBTC', (error, ticker) => {
     a = ticker.BNBBTC;
-    console.info("Price of BNB: ", ticker.BNBBTC);
+    bot.sendMessage(chatId, "$ BNB= " + a);
   });
-
-  // send a message to the chat acknowledging receipt of their message
-  bot.sendMessage(chatId, "$ BNB= " + a);
 });
+
 
 //telegram-------------------------------------
 
