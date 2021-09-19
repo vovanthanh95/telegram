@@ -16,6 +16,7 @@ app.get("/", (req, res, next) => {
 
 
 //telegram--------------------------------------
+
 tele = new main();
 const TelegramBot = require('node-telegram-bot-api');
 process.env.NTBA_FIX_319 = 1;
@@ -28,16 +29,15 @@ bot.onText(/\/start/, (msg, match) => {
   const chatId = msg.chat.id;
   bot.sendMessage(chatId, "Xin chào: " + msg.from.first_name + " " + msg.from.last_name);
 });
-//"/\/price"
+
 bot.onText(/\/(.+)/, (msg, match) => {
   var symb = match[1].toString().toUpperCase();
   tele.getPrice(symb, msg, match, bot);
 });
 
-//"/\/price"
-bot.onText(/\/rsi (.+)/, (msg, match) => {
-  var symb = match[1].toString().toUpperCase();
-  tele.getRsi(msg, symb, bot);
+bot.onText(/\/rsi (.+)/, async (msg, match) => {
+  var symbol = match[1].toString().toUpperCase() + "USDT";
+  await tele.getRsi(msg, symbol, bot);
 });
 
 //telegram-------------------------------------
