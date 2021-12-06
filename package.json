@@ -14,6 +14,7 @@
     "express": "^4.17.1",
     "node-binance-api": "^0.13.0",
     "node-telegram-bot-api": "^0.54.0",
-    "socket.io": "^4.2.0"
+    "socket.io": "^4.2.0",
+    "trading-indicator": "^1.0.4-beta"
   }
 }

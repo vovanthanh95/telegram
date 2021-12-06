@@ -40,6 +40,26 @@ bot.onText(/\/rsi (.+)/, async (msg, match) => {
   await tele.getRsi(msg, symbol, bot);
 });
 
+bot.onText(/\/check (.+)/, async (msg, match) => {
+  var symbol = match[1].toString().toUpperCase() + "/USDT";
+  let a = async function(){
+    const bb = require('trading-indicator').bb
+     let bbData = await bb(50, 2, "close", "binance", symbol, "1h", true)
+     console.log(bbData[bbData.length - 2])
+     bot.sendMessage(msg.chat.id,
+      "chỉ số bollingerband của " + symbol + "\n" +
+      "upper:" + bbData[bbData.length - 2].upper + "\n" +
+     "middle:"+ bbData[bbData.length - 2].middle + "\n" +
+     "lower:"+ bbData[bbData.length - 2].lower + "\n" +
+     "pb:"+ bbData[bbData.length - 2].pb
+   );
+  }
+  setInterval(a, 5000);
+});
+//quá mua quá bán alert
+bot.onText(/\/rsi/, async (msg, match) => {
+  tele.getRsiBuySell(msg, bot);
+});
 //telegram-------------------------------------
 
 http.listen(port, () => {

@@ -27,6 +27,41 @@ module.exports = function() {
     let rsi = await calRsi(obj);
     await bot.sendMessage(msg.chat.id, "Xin chào: " + msg.from.first_name + " " + msg.from.last_name);
     await bot.sendMessage(msg.chat.id, "RSI-14: " + symbol + " :" + rsi);
+    let ticker = await binance.prices();
+    var arr = [];
+    for (let i = 0; i < Object.keys(ticker).length; i++) {
+      if (/(.+)\USDT/.test(Object.keys(ticker)[i].toString())) {
+        arr.push(Object.keys(ticker)[i]);
+      }
+    }
+    console.log(arr);
+  };
+
+  //--------------ham xu ly lenh rsi quá mua quá bán
+  this.getRsiBuySell = async function(msg, bot) {
+    let ticker = await binance.prices();
+    var arr = [];
+    for (let i = 0; i < Object.keys(ticker).length; i++) {
+      if (/(.+)\USDT/.test(Object.keys(ticker)[i].toString())) {
+        arr.push(Object.keys(ticker)[i]);
+      }
+    }
+
+    let a = async function(){
+      alerts = require('trading-indicator').alerts
+      for (let i = 0; i < arr.length; i++) {
+      try {   let x = await alerts.rsiCheck(14, 70, 30, 'binance', arr[i], '1d', false);
+              await bot.sendMessage(msg.chat.id, i + " Cặp Tiền : " + arr[i] + "\n"+
+              "Quá Mua: " + x.overBought + "\n" +
+              "Quá Bán: " + x.overSold + "\n" +
+              "Rsi: " + x.rsiVal + "\n"
+          );
+      } catch (e) {
+      }
+    }
+  }
+    setTimeout(a, 1);
+    setInterval(a, 1800000);
   };
 
   //-------------- lay data 14 cay nen truoc do
